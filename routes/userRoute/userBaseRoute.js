@@ -175,7 +175,7 @@ const resendOTP = {
 
 const getOTP = {
   method: "GET",
-  path: "/api/getOTP",
+  path: "/api/user/getOTP",
   options: {
     description: "get OTP for Customer",
     tags: ["api", "user"],
