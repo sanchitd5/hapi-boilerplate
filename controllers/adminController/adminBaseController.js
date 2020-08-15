@@ -62,7 +62,6 @@ const adminLogin = (payload, callback) => {
         });
       },
       (cb) => {
-        console.log("function 3");
 
         if (successLogin) {
           var tokenData = {
@@ -88,8 +87,6 @@ const adminLogin = (payload, callback) => {
       }
     ],
     (err, data) => {
-      console.log("callback function");
-
       if (err) {
         return callback(err);
       } else {

@@ -6,6 +6,8 @@ import * as handlebars from "handlebars";
 import mongoose from "mongoose";
 import CONFIG from "../config/index";
 import Path from "path";
+import BootStrap from "../utils/bootStrap";
+import Routes from "../routes";
 
 /**
  * @description Helper file for the server
@@ -18,7 +20,29 @@ class ServerHelper {
 
 
   bootstrap() {
+    BootStrap.bootstrapAdmin(function (err) {
+      if (err) appLogger.debug(err)
+    });
+  }
 
+  /**
+   * 
+   * @param {Server} server 
+   */
+  addSwaggerRoutes(server) {
+    server.route(Routes);
+  }
+
+  /**
+   * 
+   * @param {Server} server 
+   */
+  attachLoggerOnEvents(server) {
+    server.events.on("response", function (request) {
+      appLogger.info(
+        `${request.info.remoteAddress} : ${request.method.toUpperCase()} ${request.url.pathname} --> ${request.response.statusCode}`);
+      appLogger.info("Request payload:", request.payload);
+    });
   }
 
   /**

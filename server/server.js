@@ -1,7 +1,5 @@
 import ServerHelper from "./helpers";
 import SocketManager from "../lib/socketManager";
-import Routes from "../routes";
-import BootStrap from "../utils/bootStrap";
 
 const initServer = async () => {
   //Create Server
@@ -16,20 +14,11 @@ const initServer = async () => {
   //Default Routes
   ServerHelper.setDefaultRoute(server)
 
-  server.route(Routes);
+  ServerHelper.addSwaggerRoutes(server);
 
   SocketManager.connectSocket(server);
 
-  BootStrap.bootstrapAdmin(function (err) {
-    if (err) appLogger.debug(err)
-  });
-
-  server.events.on("response", function (request) {
-    appLogger.info(
-      `${request.info.remoteAddress} : ${request.method.toUpperCase()} ${request.url.pathname} --> ${request.response.statusCode}`);
-    appLogger.info("Request payload:", request.payload);
-  });
-
+  ServerHelper.attachLoggerOnEvents(server);
   // Start Server
   ServerHelper.startServer(server);
 }
