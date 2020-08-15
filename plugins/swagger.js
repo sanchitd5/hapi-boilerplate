@@ -1,6 +1,8 @@
 'use strict';
 
 import HapiSwagger from 'hapi-swagger';
+import 'dotenv/config';
+
 const swaggerOptions = {
     pathPrefixSize: 2,
     info: {

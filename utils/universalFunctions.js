@@ -12,7 +12,7 @@
 */
 import Joi from "@hapi/joi";
 import MD5 from "md5";
-import Boom from "boom";
+import Boom from "@hapi/good";
 import CONFIG from "../config";
 import randomstring from "randomstring";
 import validator from "validator";

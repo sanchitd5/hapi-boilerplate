@@ -1,6 +1,6 @@
 'use strict';
  
-var good = require('good');
+var good = require('@hapi/good');
 
 const goodOptions = {
     ops: {
