@@ -3,19 +3,7 @@ import SocketManager from "../lib/socketManager";
 import Routes from "../routes";
 import BootStrap from "../utils/bootStrap";
 
-export const startMyServer = () => ServerHelper.configureLog4js();
-
-ServerHelper.connectMongoDB();
-
-// Global variable to get app root folder path
-ServerHelper.setGlobalAppRoot();
-
-process.on("unhandledRejection", err => {
-  appLogger.fatal(err);
-  process.exit(1);
-});
-
-(async () => {
+const initServer = async () => {
   //Create Server
   const server = ServerHelper.createServer();
 
@@ -44,4 +32,21 @@ process.on("unhandledRejection", err => {
 
   // Start Server
   ServerHelper.startServer(server);
-})();
+}
+
+export const startMyServer = () => {
+
+  ServerHelper.configureLog4js();
+
+  ServerHelper.connectMongoDB();
+
+  // Global variable to get app root folder path
+  ServerHelper.setGlobalAppRoot();
+
+  process.on("unhandledRejection", err => {
+    appLogger.fatal(err);
+    process.exit(1);
+  });
+
+  initServer();
+}
