@@ -1,6 +1,3 @@
-'use strict';
- 
-
 var TokenManager = require('../lib/tokenManager');
 var UniversalFunc = require('../utils/universalFunctions');
 const AuthBearer = require('hapi-auth-bearer-token');
@@ -16,10 +13,10 @@ exports.register = async function (server, options, next) {
         validate: async function (request, token, h) {
             let isValid = false;
             let credentials = await TokenManager.verifyToken(token)
-            if(credentials && credentials['userData']){
-                isValid = true; 
+            if (credentials && credentials['userData']) {
+                isValid = true;
             }
-            return { isValid, credentials};
+            return { isValid, credentials };
         }
     });
 };

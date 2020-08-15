@@ -3,7 +3,6 @@
 * make sure project folder name doesnt not have spaces in between and is same
 * as the name you give while running upload_setup.sh
 */
-'use strict';
 var s3BucketCredentials = {
     "projectFolder": "<project_folder_name>",
     "bucket": "<project_bucket_ibm>",

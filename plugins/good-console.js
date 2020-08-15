@@ -1,4 +1,4 @@
-'use strict';
+
  
 var good = require('@hapi/good');
 

@@ -1,13 +1,11 @@
-'use strict';
-
 import HapiSwagger from 'hapi-swagger';
 import 'dotenv/config';
 
 const swaggerOptions = {
     pathPrefixSize: 2,
     info: {
-        'title': `${process.env.APP_NAME} API Documentation`,
-        'description': `${process.env.APP_NAME} API documentation.`,
+        'title': `${process.env.APP_NAME} Backend`,
+        'description': `${process.env.APP_NAME} Backend APIs.`,
         'version': `${process.env.npm_package_version}`
     },
     documentationPath: "/swagger",
