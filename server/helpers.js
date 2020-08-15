@@ -117,14 +117,17 @@ class ServerHelper {
   }
 
   connectMongoDB() {
-    mongoose.set('useCreateIndex', true); 
-    mongoose.connect(CONFIG.DB_CONFIG.mongo.URI, { useNewUrlParser: true, useUnifiedTopology: true }, function (err) {
+    const mongooseOptions = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    };
+    mongoose.set('useCreateIndex', true);
+    mongoose.set('useFindAndModify', false);
+    mongoose.connect(CONFIG.DB_CONFIG.mongo.URI, mongooseOptions, (err) => {
       if (err) {
         mongoLogger.debug("DB Error: ", err);
         process.exit(1);
-      } else {
-        mongoLogger.info('MongoDB Connected');
-      }
+      } else mongoLogger.info('MongoDB Connected');
     });
   }
 }
