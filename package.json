@@ -1,0 +1,60 @@
+{
+  "name": "user-onboarding-module",
+  "main": "entry.js",
+  "description": "A Node based module using Mongodb to onboard user's into a very basic application, secured using JWT authorization",
+  "version": "0.1.1",
+  "private": false,
+  "engines": {
+    "node": "12.*"
+  },
+  "scripts": {
+    "start": "npx babel-node entry.js",
+    "startWithNodemon": "nodemon --exec babel-node entry.js"
+  },
+  "dependencies": {
+    "@hapi/good": "8.2.0",
+    "@hapi/hapi": "^19.2.0",
+    "@hapi/inert": "^6.0.2",
+    "@hapi/joi": "^17.1.1",
+    "@hapi/vision": "^6.0.1",
+    "async": "3.0.1",
+    "babel-node": "0.0.1-security",
+    "body-parser": "1.19.0",
+    "boom": "7.3.0",
+    "cfenv": "1.2.2",
+    "dotenv": "8.0.0",
+    "express": "4.17.1",
+    "fluent-ffmpeg": "2.1.2",
+    "fs": "0.0.1-security",
+    "fs-extra": "8.0.1",
+    "gm": "1.23.1",
+    "good": "8.1.2",
+    "good-console": "8.0.0",
+    "handlebars": "^4.7.6",
+    "hapi-auth-bearer-token": "6.2.1",
+    "hapi-swagger": "^13.1.0",
+    "ibm-cos-sdk": "1.5.4",
+    "joi": "^17.2.0",
+    "jsonwebtoken": "8.5.1",
+    "knox": "0.9.2",
+    "lodash": "^4.17.20",
+    "log4js": "6.1.0",
+    "md5": "2.2.1",
+    "moment": "2.24.0",
+    "moment-range": "4.0.2",
+    "mongoose": "^5.10.0",
+    "path": "0.12.7",
+    "randomstring": "1.1.5",
+    "socket.io": "2.2.0",
+    "underscore": "1.9.1",
+    "validator": "11.0.0"
+  },
+  "author": "Sanchit Dang",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.0"
+  }
+}

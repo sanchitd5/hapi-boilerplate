@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .responsiveImage {
+            height: auto;
+            max-width: 100%;
+        }
+
+        #imageContainer {
+            height: auto;
+            width: "300px";
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <title>
+        Backend Plate
+    </title>
+</head>
+
+<body>
+    <header>
+        <nav class="black white-text">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo center">Backend</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <center>
+            <div id="imageContainer">
+                <img src='https://upload.wikimedia.org/wikipedia/commons/8/88/Mini-Robot.png' />
+            </div>
+            <a class="btn black" href="/swagger" align="center">Open Swagger</a>
+        </center>
+    </main>
+    <footer class="page-footer black lighten-3 white-text">
+        <div class="black footer-copyright">
+            <div class="container">
+                © 2020 Copyright Sanchit Dang
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
