@@ -117,7 +117,7 @@ class ServerHelper {
   }
 
   connectMongoDB() {
-
+    mongoose.set('useCreateIndex', true); 
     mongoose.connect(CONFIG.DB_CONFIG.mongo.URI, { useNewUrlParser: true, useUnifiedTopology: true }, function (err) {
       if (err) {
         mongoLogger.debug("DB Error: ", err);
