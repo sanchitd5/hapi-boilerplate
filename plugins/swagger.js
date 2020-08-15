@@ -8,7 +8,7 @@ const swaggerOptions = {
     info: {
         'title': `${process.env.APP_NAME} API Documentation`,
         'description': `${process.env.APP_NAME} API documentation.`,
-        'version': '0.0.1'
+        'version': `${process.env.npm_package_version}`
     },
     documentationPath: "/swagger",
     securityDefinitions: {
