@@ -64,11 +64,11 @@ const accessTokenLogin = {
     tags: ["api", "admin"],
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'admin': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -115,7 +115,6 @@ const createAdmin = {
     tags: ["api", "admin"],
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       payload: Joi.object({
         emailId: Joi.string().required(),
         fullName: Joi.string()
@@ -126,6 +125,7 @@ const createAdmin = {
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'admin': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -157,11 +157,11 @@ const getAdmin = {
     tags: ["api", "admin"],
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'admin': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -198,7 +198,6 @@ const blockUnblockAdmin = {
     tags: ["api", "admin"],
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       payload: Joi.object({
         adminId: Joi.string().required(),
         block: Joi.boolean().required()
@@ -207,6 +206,7 @@ const blockUnblockAdmin = {
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'admin': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -253,7 +253,6 @@ const createUser = {
     tags: ["api", "admin"],
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       payload: Joi.object({
         firstName: Joi.string()
           .regex(/^[a-zA-Z ]+$/)
@@ -279,6 +278,7 @@ const createUser = {
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'admin': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -310,11 +310,11 @@ const getUser = {
     tags: ["api", "admin"],
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'admin': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -351,7 +351,6 @@ const blockUnblockUser = {
     tags: ["api", "admin"],
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       payload: Joi.object({
         userId: Joi.string().required(),
         block: Joi.boolean().required()
@@ -360,6 +359,7 @@ const blockUnblockUser = {
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'admin': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -401,7 +401,6 @@ const changePassword = {
     tags: ["api", "customer"],
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       payload: Joi.object({
         skip: Joi.boolean().required(),
         oldPassword: Joi.string().when('skip', { is: false, then: Joi.string().required().min(5), otherwise: Joi.string().optional().allow("") }),
@@ -411,6 +410,7 @@ const changePassword = {
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'admin': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -450,11 +450,11 @@ const logoutAdmin = {
       });
     },
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'admin': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }

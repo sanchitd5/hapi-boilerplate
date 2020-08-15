@@ -75,7 +75,6 @@ const verifyOTP = {
       });
     },
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       payload: Joi.object({
         OTPCode: Joi.string().length(6).required()
       }),
@@ -83,6 +82,7 @@ const verifyOTP = {
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'user': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -160,11 +160,12 @@ const resendOTP = {
       });
     },
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
+
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'user': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -244,11 +245,11 @@ const accessTokenLogin = {
     },
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'user': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -288,11 +289,12 @@ const logoutCustomer = {
       });
     },
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
+
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'user': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -342,11 +344,11 @@ const getProfile = {
       });
     },
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'user': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
@@ -389,7 +391,6 @@ const changePassword = {
     },
     auth: "UserAuth",
     validate: {
-      headers: UniversalFunctions.authorizationHeaderObj,
       payload: Joi.object({
         skip: Joi.boolean().required(),
         oldPassword: Joi.string().when('skip', { is: false, then: Joi.string().required().min(5), otherwise: Joi.string().optional().allow("") }),
@@ -399,6 +400,7 @@ const changePassword = {
     },
     plugins: {
       "hapi-swagger": {
+        security: [{ 'user': {} }],
         responseMessages:
           UniversalFunctions.CONFIG.APP_CONSTANTS.swaggerDefaultResponseMessages
       }
