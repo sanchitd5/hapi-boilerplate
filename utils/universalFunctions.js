@@ -19,20 +19,20 @@ import validator from "validator";
 import moment from "moment";
 
 
-var sendError = function (data) {
+const sendError = (data) => {
     console.trace('ERROR OCCURED ', data)
     if (typeof data == 'object' && data.hasOwnProperty('statusCode') && data.hasOwnProperty('customMessage')) {
         appLogger.info('attaching resposnetype', data.type)
-        var errorToSend = new Boom.Boom(data.customMessage, { statusCode: data.statusCode });
+        let errorToSend = new Boom.Boom(data.customMessage, { statusCode: data.statusCode });
         errorToSend.output.payload.responseType = data.type;
         return errorToSend;
     } else {
-        var errorToSend = '';
+        let errorToSend = '';
         if (typeof data == 'object') {
             if (data.name == 'MongoError') {
                 errorToSend += CONFIG.APP_CONSTANTS.STATUS_MSG.ERROR.DB_ERROR.customMessage;
                 if (data.code = 11000) {
-                    var duplicateValue = data.errmsg && data.errmsg.substr(data.errmsg.lastIndexOf('{ : "') + 5);
+                    let duplicateValue = data.errmsg && data.errmsg.substr(data.errmsg.lastIndexOf('{ : "') + 5);
                     duplicateValue = duplicateValue.replace('}', '');
                     errorToSend += CONFIG.APP_CONSTANTS.STATUS_MSG.ERROR.DUPLICATE.customMessage + " : " + duplicateValue;
                     if (data.message.indexOf('customer_1_streetAddress_1_city_1_state_1_country_1_zip_1') > -1) {
@@ -62,7 +62,7 @@ var sendError = function (data) {
     }
 };
 
-var sendSuccess = function (successMsg, data) {
+const sendSuccess = (successMsg, data) => {
     successMsg = successMsg || CONFIG.APP_CONSTANTS.STATUS_MSG.SUCCESS.DEFAULT.customMessage;
     if (typeof successMsg == 'object' && successMsg.hasOwnProperty('statusCode') && successMsg.hasOwnProperty('customMessage')) {
         return { statusCode: successMsg.statusCode, message: successMsg.customMessage, data: data || {} };
@@ -72,7 +72,7 @@ var sendSuccess = function (successMsg, data) {
 
     }
 };
-var failActionFunction = function (request, reply, error) {
+const failActionFunction = (request, reply, error) => {
     var customErrorMessage = '';
     if (error.output.payload.message.indexOf("[") > -1) {
         customErrorMessage = error.output.payload.message.substr(error.output.payload.message.indexOf("["));
@@ -87,20 +87,21 @@ var failActionFunction = function (request, reply, error) {
     return error;
 };
 
-var authorizationHeaderObj = Joi.object({
+const authorizationHeaderObj = Joi.object({
     authorization: Joi.string().required()
 }).options({ allowUnknown: true });
 
-var generateRandomString = function () {
-    return randomstring.generate(12);
+const generateRandomString = (stringLength) => {
+    if (stringLength === undefined) stringLength = 12;
+    return randomstring.generate(stringLength);
 };
 
-var generateRandomNumber = function () {
+const generateRandomNumber = () => {
     var num = Math.floor(Math.random() * 90000) + 10000;
     return num;
 };
 
-var generateRandomAlphabet = function (len) {
+const generateRandomAlphabet = function (len) {
     var charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     var randomString = '';
     for (var i = 0; i < len; i++) {
@@ -111,11 +112,11 @@ var generateRandomAlphabet = function (len) {
     return randomString;
 }
 
-var CryptData = function (stringToCrypt) {
+const CryptData = (stringToCrypt) => {
     return MD5(MD5(stringToCrypt));
 };
 
-var validateLatLongValues = function (lat, long) {
+const validateLatLongValues = (lat, long) => {
     var valid = true;
     if (lat < -90 || lat > 90) {
         valid = false;
@@ -126,12 +127,12 @@ var validateLatLongValues = function (lat, long) {
     return valid;
 };
 
-var validateString = function (str, pattern) {
+const validateString = (str, pattern) => {
     appLogger.info(str, pattern, str.match(pattern));
-
     return str.match(pattern);
 };
-var verifyEmailFormat = function (string) {
+
+const verifyEmailFormat = (string) => {
     return validator.isEmail(string)
 };
 var deleteUnnecessaryUserData = function (userObj) {
