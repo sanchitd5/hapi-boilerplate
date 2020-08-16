@@ -58,7 +58,7 @@ var sendError = function (data) {
             customErrorMessage = customErrorMessage && customErrorMessage.replace('[', '');
             customErrorMessage = customErrorMessage && customErrorMessage.replace(']', '');
         }
-        return new Boom(customErrorMessage, { statusCode: 400 })
+        return new Boom.Boom(customErrorMessage, { statusCode: 400 })
     }
 };
 
