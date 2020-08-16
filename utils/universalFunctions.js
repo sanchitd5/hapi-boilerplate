@@ -12,7 +12,7 @@
 */
 import Joi from "@hapi/joi";
 import MD5 from "md5";
-import Boom from "@hapi/good";
+import Boom from "@hapi/boom";
 import CONFIG from "../config";
 import randomstring from "randomstring";
 import validator from "validator";
@@ -23,7 +23,7 @@ var sendError = function (data) {
     console.trace('ERROR OCCURED ', data)
     if (typeof data == 'object' && data.hasOwnProperty('statusCode') && data.hasOwnProperty('customMessage')) {
         appLogger.info('attaching resposnetype', data.type)
-        var errorToSend = new Boom(data.customMessage, { statusCode: data.statusCode });
+        var errorToSend = new Boom.Boom(data.customMessage, { statusCode: data.statusCode });
         errorToSend.output.payload.responseType = data.type;
         return errorToSend;
     } else {
