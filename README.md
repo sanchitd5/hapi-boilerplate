@@ -1,7 +1,7 @@
 # Node.js User Onboarding application
 A Node based module using Mongodb to onboard user's into a very basic application, secured using JWT authorization.
 
-The Node.js app uses [Hapi Framework](https://hapijs.com)
+The Node.js app uses [Hapi Framework](https://hapijs.com) and [Hapi Swagger](https://github.com/glennjones/hapi-swagger)
 
 # Contents
 
@@ -69,7 +69,6 @@ $ npm install
 
 ```
 $ npm i -g @babel/core @babel/node
-
 ```
 
 * Step3: Copy .env.example to .env
