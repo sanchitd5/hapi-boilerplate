@@ -2,12 +2,15 @@ import Hapi from "@hapi/hapi";
 import Joi from "joi";
 import log4js from "log4js";
 import SwaggerPlugins from "../plugins";
+import fs from "fs";
 import * as handlebars from "handlebars";
 import mongoose from "mongoose";
 import CONFIG from "../config/index";
 import Path from "path";
 import BootStrap from "../utils/bootStrap";
 import Routes from "../routes";
+import Http2 from "http2";
+import * as Underdog from "underdog";
 
 /**
  * @description Helper file for the server
@@ -46,24 +49,58 @@ class ServerHelper {
   }
 
   /**
+   * @param {Object} options Options for creating server
+   * @param {boolean} options.useHttp2 Use Http2 Protocol
    * @returns {Server} A Hapi Server
    */
-  createServer() {
-    let server = new Hapi.Server({
-      app: {
-        name: process.env.APP_NAME || "default"
-      },
-      port: process.env.HAPI_PORT || 8000,
-      routes: { cors: true }
-    });
+  createServer(options) {
+    let server;
+    if (options?.useHttp2) {
+      const listener = Http2.createSecureServer({
+        // See tests for a key/cert that you can use to try this out
+        key: fs.readFileSync(`certs/localhost8000.key`),
+        cert: fs.readFileSync(`certs/localhost8000.cert`)
+      });
+      server = new Hapi.Server({
+        listener,
+        tls: true,
+        app: {
+          name: process.env.APP_NAME || "default"
+        },
+        host: "localhost",
+        port: process.env.HAPI_PORT || 8000,
+        routes: {
+          cors: true,
+          payload: {
+            allow: ['application/json', 'application/*+json'],
+          },
+        }
+      });
+    } else {
+      server = new Hapi.Server({
+        app: {
+          name: process.env.APP_NAME || "default"
+        },
+        port: process.env.HAPI_PORT || 8000,
+        routes: { cors: true }
+      });
+    }
     server.validator(Joi);
     return server;
   }
 
   /**
+   * 
+   * @param {Hapi.Server} server HAPI server 
+   */
+  async registerUnderDog(server) {
+    await server.register(Underdog);
+  }
+
+  /**
    * @author Sanchit Dang
    * @description Adds Views to the server
-   * @param {Server} server 
+   * @param {Hapi.Server} server 
    */
   addViews(server) {
     server.views({
@@ -78,7 +115,7 @@ class ServerHelper {
   /**
    * @author Sanchit Dang
    * @description sets default route for the server
-   * @param {Server} server HAPI Server
+   * @param {Hapi.Server} server HAPI Server
    * @param {String} defaultRoute Optional - default route
    */
   setDefaultRoute(server, defaultRoute) {
@@ -94,7 +131,7 @@ class ServerHelper {
 
   /**
    * 
-   * @param {Server} server HAPI Server
+   * @param {Hapi.Server} server HAPI Server
    */
   async registerPlugins(server) {
     await server.register(SwaggerPlugins, {}, err => {

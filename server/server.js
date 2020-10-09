@@ -1,9 +1,17 @@
 import ServerHelper from "./helpers";
 import SocketManager from "../lib/socketManager";
+import 'dotenv/config';
+
+const useHttp2 = (process.env.USE_HTTP2 === "true");
 
 const initServer = async () => {
   //Create Server
-  const server = ServerHelper.createServer();
+  const server = ServerHelper.createServer({
+    useHttp2
+  });
+
+  //Register Underdog
+  await ServerHelper.registerUnderDog(server);
 
   //Register All Plugins
   await ServerHelper.registerPlugins(server);

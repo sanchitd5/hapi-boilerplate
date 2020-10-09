@@ -43,6 +43,7 @@
     "path": "0.12.7",
     "randomstring": "1.1.5",
     "socket.io": "2.2.0",
+    "underdog": "^4.1.0",
     "underscore": "1.9.1",
     "validator": "11.0.0"
   },
