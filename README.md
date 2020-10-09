@@ -68,7 +68,7 @@ $ npm install
 ```
 
 ```
-$ npm i -g @babel/core @babel/node
+$ npm i -g @babel/core @babel/node @babel/cli
 ```
 
 * Step3: Copy .env.example to .env
@@ -77,12 +77,25 @@ $ npm i -g @babel/core @babel/node
 $ cp .env.example .env
 ```
 
-* Step4: Start the application
+* Step4a: Start the application
 
 ```
-For Development Mode
+$ npm start
+```
+* Step4b: Start With Nodemon
+```
+$ npm run startWithNodemon
+```
 
-$ npm run start
+## Build
+
+```
+$ npm run build
+```
+
+## Starting the build
+```
+$ npm run startProd
 ```
 
 The current version of your application would be running on **http://localhost:8000** or **http://IP_OF_SERVER:8000** (in case you are running on the server)

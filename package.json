@@ -1,6 +1,6 @@
 {
   "name": "user-onboarding-module",
-  "main": "entry.js",
+  "main": "src/entry.js",
   "description": "A Node based module using Mongodb to onboard user's into a very basic application, secured using JWT authorization",
   "version": "0.1.1",
   "private": false,
@@ -8,8 +8,10 @@
     "node": "12.*"
   },
   "scripts": {
-    "start": "npx babel-node entry.js",
-    "startWithNodemon": "nodemon --exec babel-node entry.js"
+    "start": "npx babel-node src/entry.js",
+    "startWithNodemon": "nodemon --exec babel-node src/entry.js",
+    "build": "npx babel src --out-dir build --ignore node_modules",
+    "startProd": "node build/entry.js"
   },
   "dependencies": {
     "@hapi/boom": "^9.1.0",
@@ -49,7 +51,8 @@
   "author": "Sanchit Dang",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@babel/core": "^7.11.1",
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
     "@babel/node": "^7.10.5",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/preset-env": "^7.11.0"

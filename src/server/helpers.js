@@ -71,7 +71,7 @@ class ServerHelper {
         html: handlebars
       },
       relativeTo: __dirname,
-      path: "../views"
+      path: "../../views"
     });
   }
 

@@ -1,6 +1,7 @@
 import Service from '../services';
 import async from "async";
 import UniversalFunctions from "../utils/universalFunctions";
+import { superAdmins } from "../config/users";
 
 const insertData = (adminData, callbackParent) => {
     var _skip = false
@@ -42,31 +43,20 @@ const insertData = (adminData, callbackParent) => {
 
 const bootstrapAdmin = (callbackParent) => {
     var taskToRunInParallel = [];
-    var adminData = [
-        {
-            emailId: 'sanchitdang@admin.com',
-            password: UniversalFunctions.CryptData("123456"),
-            fullName: 'Sanchit Dang',
-            userType: UniversalFunctions.CONFIG.APP_CONSTANTS.DATABASE.USER_ROLES.SUPERADMIN,
-            createdAt: UniversalFunctions.getTimestamp(),
-            firstLogin: true
-        },
-        {
-            emailId: 'myadmin@admin.com',
-            password: UniversalFunctions.CryptData("123456"),
-            fullName: 'MyAdmin 2',
-            userType: UniversalFunctions.CONFIG.APP_CONSTANTS.DATABASE.USER_ROLES.SUPERADMIN,
-            createdAt: UniversalFunctions.getTimestamp(),
-            firstLogin: true
-        }
-    ];
-
-    adminData.forEach(function (dataObj) {
-        taskToRunInParallel.push((function (dataObj) {
-            return function (embeddedCB) {
-                insertData(dataObj, embeddedCB);
+    superAdmins.forEach((admin) => {
+        taskToRunInParallel.push(((admin) => {
+            return (embeddedCB) => {
+                let adminData = {
+                    emailId: admin.email,
+                    password: UniversalFunctions.CryptData(admin.password),
+                    fullName: admin.name,
+                    userType: UniversalFunctions.CONFIG.APP_CONSTANTS.DATABASE.USER_ROLES.SUPERADMIN,
+                    createdAt: UniversalFunctions.getTimestamp(),
+                    firstLogin: true
+                };
+                insertData(adminData, embeddedCB);
             }
-        })(dataObj));
+        })(admin));
     });
     async.parallel(taskToRunInParallel, function (error) {
         if (error)
