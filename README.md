@@ -67,6 +67,11 @@ or
 $ npm install
 ```
 
+```
+$ npm i -g @babel/core @babel/node
+
+```
+
 * Step3: Copy .env.example to .env
 
 ```
