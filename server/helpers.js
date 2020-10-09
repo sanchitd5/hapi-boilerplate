@@ -1,5 +1,5 @@
 import Hapi from "@hapi/hapi";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import log4js from "log4js";
 import SwaggerPlugins from "../plugins";
 import * as handlebars from "handlebars";

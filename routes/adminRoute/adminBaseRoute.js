@@ -1,6 +1,6 @@
 
 import UniversalFunctions from "../../utils/universalFunctions";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import Controller from "../../controllers";
 
 const adminLogin = {
@@ -24,7 +24,7 @@ const adminLogin = {
       payload: Joi.object({
         emailId: Joi.string().email().required(),
         password: Joi.string().required().min(5).trim()
-      }),
+      }).label("Admin: Login"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -37,7 +37,6 @@ const adminLogin = {
 };
 
 const accessTokenLogin = {
-  /* *****************access token login****************** */
   method: "POST",
   path: "/api/admin/accessTokenLogin",
   handler: function (request, h) {
@@ -120,7 +119,7 @@ const createAdmin = {
         fullName: Joi.string()
           .optional()
           .allow("")
-      }),
+      }).label("Admin: Create Admin"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -201,7 +200,7 @@ const blockUnblockAdmin = {
       payload: Joi.object({
         adminId: Joi.string().required(),
         block: Joi.boolean().required()
-      }),
+      }).label("Admin: Block-Unblock Admin"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -273,7 +272,7 @@ const createUser = {
           .max(4)
           .required()
           .trim()
-      }),
+      }).label("Admin: Create User"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -354,7 +353,7 @@ const blockUnblockUser = {
       payload: Joi.object({
         userId: Joi.string().required(),
         block: Joi.boolean().required()
-      }),
+      }).label("Admin: Block-Unblock User"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -405,7 +404,7 @@ const changePassword = {
         skip: Joi.boolean().required(),
         oldPassword: Joi.string().when('skip', { is: false, then: Joi.string().required().min(5), otherwise: Joi.string().optional().allow("") }),
         newPassword: Joi.string().when('skip', { is: false, then: Joi.string().required().min(5), otherwise: Joi.string().optional().allow("") })
-      }),
+      }).label("Admin: Change Password"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {

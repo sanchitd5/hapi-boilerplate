@@ -2,7 +2,7 @@
 
 
 import UniversalFunctions from "../../utils/universalFunctions";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import Controller from "../../controllers";
 
 const uploadImage =
@@ -36,7 +36,7 @@ const uploadImage =
           .meta({ swaggerType: 'file' })
           .required()
           .description('image file')
-      }),
+      }).label("Upload: Image"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -79,7 +79,7 @@ const uploadVideo =
           .meta({ swaggerType: 'file' })
           .required()
           .description('video file')
-      }),
+      }).label("Upload: Video"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -122,7 +122,7 @@ const uploadDocument =
           .meta({ swaggerType: 'file' })
           .required()
           .description('document file')
-      }),
+      }).label("Upload: Document"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {

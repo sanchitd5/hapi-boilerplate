@@ -1,5 +1,5 @@
 import UniversalFunctions from "../../utils/universalFunctions";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import Controller from "../../controllers";
 
 const userRegister = {
@@ -38,7 +38,7 @@ const userRegister = {
         phoneNumber: Joi.string().regex(/^[0-9]+$/).min(5).required(),
         countryCode: Joi.string().max(4).required().trim(),
         password: Joi.string().required().min(5)
-      }),
+      }).label("User: Register"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -77,7 +77,7 @@ const verifyOTP = {
     validate: {
       payload: Joi.object({
         OTPCode: Joi.string().length(6).required()
-      }),
+      }).label("User: Verify OTP Model"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -118,7 +118,7 @@ const login = {
       payload: Joi.object({
         emailId: Joi.string().required(),
         password: Joi.string().required().min(5).trim()
-      }),
+      }).label("User: Login"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -160,7 +160,6 @@ const resendOTP = {
       });
     },
     validate: {
-
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -216,7 +215,6 @@ const getOTP = {
 };
 
 const accessTokenLogin = {
-  /* *****************access token login****************** */
   method: "POST",
   path: "/api/user/accessTokenLogin",
 
@@ -289,7 +287,6 @@ const logoutCustomer = {
       });
     },
     validate: {
-
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -359,7 +356,6 @@ const getProfile = {
 const changePassword = {
   method: "PUT",
   path: "/api/user/changePassword",
-
   options: {
     description: "change Password",
     tags: ["api", "customer"],
@@ -395,7 +391,7 @@ const changePassword = {
         skip: Joi.boolean().required(),
         oldPassword: Joi.string().when('skip', { is: false, then: Joi.string().required().min(5), otherwise: Joi.string().optional().allow("") }),
         newPassword: Joi.string().when('skip', { is: false, then: Joi.string().required().min(5), otherwise: Joi.string().optional().allow("") })
-      }),
+      }).label("User: Change Password"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -447,7 +443,7 @@ const forgotPassword = {
     validate: {
       payload: Joi.object({
         emailId: Joi.string().required()
-      }),
+      }).label("User: Forget Password"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {
@@ -503,7 +499,7 @@ const resetPassword = {
           .trim(),
         emailId: Joi.string().required(),
         OTPCode: Joi.string().required()
-      }),
+      }).label("User: Reset Password"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {

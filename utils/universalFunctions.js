@@ -10,7 +10,7 @@
 * - ERROR - ‘red’
 * - FATAL - ‘magenta’
 */
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import MD5 from "md5";
 import Boom from "@hapi/boom";
 import CONFIG from "../config";

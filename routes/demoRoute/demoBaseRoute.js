@@ -1,6 +1,6 @@
 
 import UniversalFunctions from "../../utils/universalFunctions";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import Controller from "../../controllers";
 
 const Config = UniversalFunctions.CONFIG;
@@ -32,7 +32,7 @@ const demoApi = {
     validate: {
       payload: Joi.object({
         message: Joi.string().required()
-      }),
+      }).label("Demo Model"),
       failAction: UniversalFunctions.failActionFunction
     },
     plugins: {

@@ -1,7 +1,9 @@
+import inert from "@hapi/inert";
+import vision from "@hapi/vision";
 
 export default [
-    require('@hapi/inert'),
-    require('@hapi/vision'),
+    inert,
+    vision,
     { plugin: require('./swagger') },
     { plugin: require('./good-console') },
     { plugin: require('./auth-token') }
