@@ -2,7 +2,7 @@
   "name": "user-onboarding-module",
   "main": "src/entry.js",
   "description": "A Node based module using Mongodb to onboard user's into a very basic application, secured using JWT authorization",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "private": false,
   "engines": {
     "node": "12.*"
