@@ -921,7 +921,7 @@ var resetPassword = function (payloadData, callbackRoute) {
   );
 };
 
-module.exports = {
+export default {
   createUser: createUser,
   verifyOTP: verifyOTP,
   loginUser: loginUser,

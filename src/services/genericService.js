@@ -1,16 +1,21 @@
 import MODELS from "../models/index";
 
 /**
- * Generic Service
+ * @author Sanchit Dang
+ * @description Generic Service Template
  */
 export default class GenericService {
-    constructor(name) {
-        if (!this.isModelValid(name)) {
-            appLogger.error(`Invalid model name ${name}`);
-            throw "Invalid model name '" + name + "'. Terminating app..."
+    /**
+     * 
+     * @param {String} modelName Name of the Model
+     */
+    constructor(modelName) {
+        if (!this.isModelValid(modelName)) {
+            appLogger.error(`Invalid model name ${modelName}`);
+            throw "Invalid model name '" + modelName + "'. Terminating app..."
         }
 
-        this.modelName = name;
+        this.modelName = modelName;
         this.objects = [];
     }
 

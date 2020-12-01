@@ -67,7 +67,6 @@ exports.generateUniqueCode = (noOfDigits, userRole, callback) => {
                     if (err) {
                         cb(err);
                     } else {
-                        var generatedCodes = [];
                         if (data && data.length > 0) {
                             excludeArray = data.map(row => row.OTPCode.toString());
                         }

@@ -1,4 +1,4 @@
-
+import Hapi from "@hapi/hapi";
 import SocketIO from "socket.io";
 /**
 * Please use socketLogger for logging in this file try to abstain from console
@@ -13,6 +13,10 @@ import SocketIO from "socket.io";
 
 class SocketManager {
 
+    /**
+     * 
+     * @param {Hapi.Server} server HAPI Server
+     */
     connectSocket = (server) => {
         const io = SocketIO.listen(server.listener);
         socketLogger.info("socket server started");

@@ -27,7 +27,7 @@ class ServerHelper {
 
   /**
    * 
-   * @param {Server} server 
+   * @param {Hapi.Server} server 
    */
   addSwaggerRoutes(server) {
     server.route(Routes);
@@ -35,7 +35,7 @@ class ServerHelper {
 
   /**
    * 
-   * @param {Server} server 
+   * @param {Hapi.Server} server 
    */
   attachLoggerOnEvents(server) {
     server.events.on("response", function (request) {
@@ -46,7 +46,7 @@ class ServerHelper {
   }
 
   /**
-   * @returns {Server} A Hapi Server
+   * @returns {Hapi.Server} A Hapi Server
    */
   createServer() {
     let server = new Hapi.Server({
@@ -63,7 +63,7 @@ class ServerHelper {
   /**
    * @author Sanchit Dang
    * @description Adds Views to the server
-   * @param {Server} server 
+   * @param {Hapi.Server} server 
    */
   addViews(server) {
     server.views({
@@ -78,7 +78,7 @@ class ServerHelper {
   /**
    * @author Sanchit Dang
    * @description sets default route for the server
-   * @param {Server} server HAPI Server
+   * @param {Hapi.Server} server HAPI Server
    * @param {String} defaultRoute Optional - default route
    */
   setDefaultRoute(server, defaultRoute) {
@@ -94,7 +94,7 @@ class ServerHelper {
 
   /**
    * 
-   * @param {Server} server HAPI Server
+   * @param {Hapi.Server} server HAPI Server
    */
   async registerPlugins(server) {
     await server.register(SwaggerPlugins, {}, err => {
@@ -131,6 +131,10 @@ class ServerHelper {
     global.mongoLogger = log4js.getLogger('Mongo_Manager');
   }
 
+  /**
+   * 
+   * @param {Hapi.Server} server 
+   */
   async startServer(server) {
     try {
       await server.start();

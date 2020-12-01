@@ -17,11 +17,11 @@
  * @param {String} payload.message 
  * @param {Function} callback 
  */
-var demoFunction = (payload, callback) => {
+const demoFunction = (payload, callback) => {
   appLogger.info(payload.message);
   return callback(null, payload);
 };
 
-module.exports = {
+export default {
   demoFunction: demoFunction,
 };
