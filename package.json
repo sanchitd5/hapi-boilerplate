@@ -11,16 +11,14 @@
     "start": "npx babel-node src/entry.js",
     "startWithNodemon": "nodemon --exec babel-node src/entry.js",
     "build": "npx babel src --out-dir build --ignore node_modules",
-    "startProd": "node build/entry.js"
+    "deployment": "node build/entry.js"
   },
   "dependencies": {
     "@hapi/boom": "^9.1.0",
-    "@hapi/good": "^9.0.1",
-    "@hapi/good-console": "^9.0.1",
-    "@hapi/hapi": "^20.0.1",
+    "@hapi/hapi": "^20.0.3",
     "@hapi/inert": "^6.0.3",
     "@hapi/vision": "^6.0.1",
-    "async": "3.0.1",
+    "async": "^3.2.0",
     "babel-node": "0.0.1-security",
     "body-parser": "1.19.0",
     "cfenv": "1.2.2",
@@ -36,7 +34,7 @@
     "ibm-cos-sdk": "1.5.4",
     "joi": "^17.2.1",
     "jsonwebtoken": "8.5.1",
-    "knox": "0.9.2",
+    "knox": "^0.9.2",
     "lodash": "^4.17.20",
     "log4js": "6.1.0",
     "md5": "2.2.1",

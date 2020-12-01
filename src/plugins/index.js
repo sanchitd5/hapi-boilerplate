@@ -5,6 +5,5 @@ export default [
     inert,
     vision,
     { plugin: require('./swagger') },
-    { plugin: require('./good-console') },
     { plugin: require('./auth-token') }
 ];

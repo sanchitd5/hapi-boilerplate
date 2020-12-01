@@ -1,5 +1,4 @@
 var TokenManager = require('../lib/tokenManager');
-var UniversalFunc = require('../utils/universalFunctions');
 const AuthBearer = require('hapi-auth-bearer-token');
 
 exports.register = async function (server, options, next) {

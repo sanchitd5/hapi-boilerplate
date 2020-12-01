@@ -11,16 +11,17 @@
  * - FATAL - ‘magenta’
  */
 
-var demoFunction = function (payloadData, callback) {
-  return callback(null, payloadData);
-};
-
-var demoFunctionAuth = function (userData, payloadData, callback) {
-  appLogger.debug(">>>>", userData, payloadData)
-  return callback(null, payloadData);
+/**
+ * 
+ * @param {Object} payload 
+ * @param {String} payload.message 
+ * @param {Function} callback 
+ */
+var demoFunction = (payload, callback) => {
+  appLogger.info(payload.message);
+  return callback(null, payload);
 };
 
 module.exports = {
   demoFunction: demoFunction,
-  demoFunctionAuth: demoFunctionAuth
 };

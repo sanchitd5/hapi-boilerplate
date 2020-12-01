@@ -95,7 +95,7 @@ $ npm run build
 
 ## Starting the build
 ```
-$ npm run startProd
+$ npm run deployment
 ```
 
 The current version of your application would be running on **http://localhost:8000** or **http://IP_OF_SERVER:8000** (in case you are running on the server)
