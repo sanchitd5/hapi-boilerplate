@@ -1,11 +1,10 @@
 /**
  * Created by Sanchit
  */
+import User from './user';
+import Admin from './admin';
 
-'use strict'
-const User = require('./user');
 const ForgetPassword = require('./forgotPasswordRequest');
-const Admin = require('./admin');
 
 export default {
   User,

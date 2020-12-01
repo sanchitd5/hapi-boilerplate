@@ -1,9 +1,9 @@
-import UserService from './userService';
+import GenericService from './genericService';
+
 import ForgetPasswordService from './forgetPasswordService';
-import AdminService from './adminService';
 
 export default {
-  UserService,
+  UserService: new GenericService('User'),
   ForgetPasswordService,
-  AdminService
+  AdminService: new GenericService('Admin')
 };

@@ -15,7 +15,7 @@ const adminLogin = (payload, callback) => {
   async.series(
     [
       (cb) => {
-        Service.AdminService.getAdmin({ emailId: emailId }, {}, {}, (err, result) => {
+        Service.AdminService.getRecord({ emailId: emailId }, {}, {}, (err, result) => {
           if (err) cb(err);
           else {
             userFound = (result && result[0]) || null;
@@ -49,7 +49,7 @@ const adminLogin = (payload, callback) => {
         var option = {
           lean: true
         };
-        Service.AdminService.getAdmin(criteria, projection, option, function (
+        Service.AdminService.getRecord(criteria, projection, option, function (
           err,
           result
         ) {
@@ -109,7 +109,7 @@ const accessTokenLogin = function (userData, callback) {
         var criteria = {
           _id: userData._id
         };
-        Service.AdminService.getAdmin(criteria, { password: 0 }, {}, function (
+        Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (
           err,
           data
         ) {
@@ -154,7 +154,7 @@ const createAdmin = function (userData, payloadData, callback) {
         var criteria = {
           _id: userData._id
         };
-        Service.AdminService.getAdmin(criteria, { password: 0 }, {}, function (err, data) {
+        Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
           if (err) cb(err);
           else {
             if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
@@ -170,7 +170,7 @@ const createAdmin = function (userData, payloadData, callback) {
         var criteria = {
           emailId: payloadData.emailId
         }
-        Service.AdminService.getAdmin(criteria, {}, {}, function (err, data) {
+        Service.AdminService.getRecord(criteria, {}, {}, function (err, data) {
           if (err) cb(err)
           else {
             if (data.length > 0) cb(ERROR.USERNAME_EXIST)
@@ -206,7 +206,7 @@ const getAdmin = function (userData, callback) {
       var criteria = {
         _id: userData._id
       };
-      Service.AdminService.getAdmin(criteria, { password: 0 }, {}, function (err, data) {
+      Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
         else {
           if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
@@ -219,7 +219,7 @@ const getAdmin = function (userData, callback) {
       });
     },
     function (cb) {
-      Service.AdminService.getAdmin({
+      Service.AdminService.getRecord({
         userType: Config.APP_CONSTANTS.DATABASE.USER_ROLES.ADMIN
       }, { password: 0, __v: 0, createdAt: 0 }, {}, function (err, data) {
         if (err) cb(err)
@@ -241,7 +241,7 @@ var blockUnblockAdmin = function (userData, payloadData, callback) {
       var criteria = {
         _id: userData._id
       };
-      Service.AdminService.getAdmin(criteria, { password: 0 }, {}, function (err, data) {
+      Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
         else {
           if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
@@ -254,7 +254,7 @@ var blockUnblockAdmin = function (userData, payloadData, callback) {
       });
     },
     function (cb) {
-      Service.AdminService.getAdmin({ _id: payloadData.adminId }, {}, {}, function (err, data) {
+      Service.AdminService.getRecord({ _id: payloadData.adminId }, {}, {}, function (err, data) {
         if (err) cb(err)
         else {
           if (data.length == 0) cb(ERROR.USER_NOT_FOUND)
@@ -271,7 +271,7 @@ var blockUnblockAdmin = function (userData, payloadData, callback) {
           isBlocked: payloadData.block
         }
       }
-      Service.AdminService.updateAdmin(criteria, dataToUpdate, {}, function (err, data) {
+      Service.AdminService.updateRecord(criteria, dataToUpdate, {}, function (err, data) {
         if (err) cb(err)
         else cb()
       })
@@ -290,7 +290,7 @@ const createUser = function (userData, payloadData, callback) {
       var criteria = {
         _id: userData._id
       };
-      Service.AdminService.getAdmin(criteria, { password: 0 }, {}, function (err, data) {
+      Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
         else {
           if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
@@ -302,7 +302,7 @@ const createUser = function (userData, payloadData, callback) {
       });
     },
     function (cb) {
-      Service.UserService.getUser({ emailId: payloadData.emailId }, {}, {}, function (err, data) {
+      Service.UserService.getRecord({ emailId: payloadData.emailId }, {}, {}, function (err, data) {
         if (err) cb(err)
         else {
           if (data.length != 0) cb(ERROR.USER_ALREADY_REGISTERED)
@@ -314,7 +314,7 @@ const createUser = function (userData, payloadData, callback) {
       payloadData.initialPassword = UniversalFunctions.generateRandomString();
       payloadData.password = UniversalFunctions.CryptData(payloadData.initialPassword);
       payloadData.emailVerified = true;
-      Service.UserService.createUser(payloadData, function (err, data) {
+      Service.UserService.createRecord(payloadData, function (err, data) {
         if (err) cb(err)
         else {
           newUserData = data;
@@ -336,7 +336,7 @@ const getUser = (userData, callback) => {
       var criteria = {
         _id: userData._id
       };
-      Service.AdminService.getAdmin(criteria, { password: 0 }, {}, function (err, data) {
+      Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
         else {
           if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
@@ -358,7 +358,7 @@ const getUser = (userData, callback) => {
         __v: 0,
         registrationDate: 0
       }
-      Service.UserService.getUser({}, projection, {}, function (err, data) {
+      Service.UserService.getRecord({}, projection, {}, function (err, data) {
         if (err) cb(err)
         else {
           userList = data;
@@ -378,7 +378,7 @@ var blockUnblockUser = function (userData, payloadData, callback) {
       var criteria = {
         _id: userData._id
       };
-      Service.AdminService.getAdmin(criteria, { password: 0 }, {}, function (err, data) {
+      Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
         else {
           if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
@@ -391,7 +391,7 @@ var blockUnblockUser = function (userData, payloadData, callback) {
       });
     },
     function (cb) {
-      Service.UserService.getUser({ _id: payloadData.userId }, {}, {}, function (err, data) {
+      Service.UserService.getRecord({ _id: payloadData.userId }, {}, {}, function (err, data) {
         if (err) cb(err)
         else {
           if (data.length == 0) cb(ERROR.USER_NOT_FOUND)
@@ -408,7 +408,7 @@ var blockUnblockUser = function (userData, payloadData, callback) {
           isBlocked: payloadData.block
         }
       }
-      Service.UserService.updateUser(criteria, dataToUpdate, {}, function (err, data) {
+      Service.UserService.updateRecord(criteria, dataToUpdate, {}, function (err, data) {
         if (err) cb(err)
         else cb()
       })
@@ -430,7 +430,7 @@ var changePassword = function (userData, payloadData, callbackRoute) {
           _id: userData._id
         };
         var options = { lean: true };
-        Service.AdminService.getAdmin(query, {}, options, function (err, data) {
+        Service.AdminService.getRecord(query, {}, options, function (err, data) {
           if (err) {
             cb(err);
           } else {
@@ -452,7 +452,7 @@ var changePassword = function (userData, payloadData, callbackRoute) {
           firstLogin: 1
         };
         var options = { lean: true };
-        Service.AdminService.getAdmin(query, projection, options, function (
+        Service.AdminService.getRecord(query, projection, options, function (
           err,
           data
         ) {
@@ -495,7 +495,7 @@ var changePassword = function (userData, payloadData, callbackRoute) {
           dataToUpdate = { $set: { password: newPassword } };
         }
         var condition = { _id: userData._id };
-        Service.AdminService.updateAdmin(condition, dataToUpdate, {}, function (
+        Service.AdminService.updateRecord(condition, dataToUpdate, {}, function (
           err,
           user
         ) {
@@ -528,7 +528,7 @@ var logoutAdmin = function (userData, callbackRoute) {
         var criteria = {
           _id: userData._id
         };
-        Service.AdminService.getAdmin(criteria, {}, {}, function (err, data) {
+        Service.AdminService.getRecord(criteria, {}, {}, function (err, data) {
           if (err) cb(err);
           else {
             if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
@@ -541,7 +541,7 @@ var logoutAdmin = function (userData, callbackRoute) {
       function (callback) {
         var condition = { _id: userData._id };
         var dataToUpdate = { $unset: { accessToken: 1 } };
-        Service.AdminService.updateAdmin(condition, dataToUpdate, {}, function (
+        Service.AdminService.updateRecord(condition, dataToUpdate, {}, function (
           err,
           result
         ) {

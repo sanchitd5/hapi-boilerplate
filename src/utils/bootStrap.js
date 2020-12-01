@@ -4,13 +4,13 @@ import UniversalFunctions from "../utils/universalFunctions";
 import { superAdmins } from "../config/users";
 
 const insertData = (adminData, callbackParent) => {
-    var _skip = false
+    let _skip = false;
     async.series([
         (cb) => {
-            Service.AdminService.getAdmin({ emailId: adminData.emailId }, {}, {}, (err, data) => {
+            Service.AdminService.getRecord({ emailId: adminData.emailId }, {}, {}, (err, data) => {
                 if (err) cb(err)
                 else {
-                    if (data.length != 0) {
+                    if (data.length > 0) {
                         _skip = true;
                         cb()
                     }
@@ -20,13 +20,13 @@ const insertData = (adminData, callbackParent) => {
         },
         (cb) => {
             if (!_skip) {
-                Service.AdminService.createAdmin(adminData, (err, response) => {
+                Service.AdminService.createRecord(adminData, (err, response) => {
                     if (err) {
                         appLogger.debug("Implementation err", err);
                         cb(err)
                     }
                     else {
-                        appLogger.info("Admin Added Succesfully");
+                        appLogger.info(`Admin: ${adminData.emailId} Added Succesfully`);
                         cb()
                     }
                 });

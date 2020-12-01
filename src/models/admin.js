@@ -1,10 +1,7 @@
-import mongoose from "mongoose";
-
-var Schema = mongoose.Schema;
+import mongoose, { Schema } from "mongoose";
 import Config from "../config"
 
-
-var admin = new Schema({
+const admin = new Schema({
     emailId: { type: String, unique: true, sparse: true },
     fullName: { type: String },
     password: { type: String, required: true },
@@ -21,4 +18,4 @@ var admin = new Schema({
     isBlocked: { type: Boolean, default: false, required: true }
 });
 
-module.exports = mongoose.model('admin', admin);
+export default mongoose.model('admin', admin);

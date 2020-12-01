@@ -33,7 +33,7 @@ const createUser = (payloadData, callback) => {
         var query = {
           $or: [{ emailId: payloadData.emailId }]
         };
-        Service.UserService.getUser(query, {}, { lean: true }, (error, data) => {
+        Service.UserService.getRecord(query, {}, { lean: true }, (error, data) => {
           if (error) cb(error);
           else {
             if (data && data.length > 0) {
@@ -92,7 +92,7 @@ const createUser = (payloadData, callback) => {
         dataToSave.phoneNumber = payloadData.phoneNumber;
         dataToSave.registrationDate = new Date().toISOString();
         dataToSave.firstLogin = true;
-        Service.UserService.createUser(dataToSave, (err, customerDataFromDB) => {
+        Service.UserService.createRecord(dataToSave, (err, customerDataFromDB) => {
           if (err) {
             if (err.code == 11000 && err.message.indexOf("emailId_1") > -1) {
               cb(ERROR.EMAIL_NO_EXIST);
@@ -177,7 +177,7 @@ const verifyOTP = (payload, callback) => {
           _id: userData._id
         };
         const options = { lean: true };
-        Service.UserService.getUser(query, {}, options, (err, data) => {
+        Service.UserService.getRecord(query, {}, options, (err, data) => {
           if (err) cb(err);
           else {
             if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
@@ -205,7 +205,7 @@ const verifyOTP = (payload, callback) => {
           $unset: { OTPCode: 1 }
         };
         const options = { new: true };
-        Service.UserService.updateUser(criteria, setQuery, options, (err, updatedData) => {
+        Service.UserService.updateRecord(criteria, setQuery, options, (err, updatedData) => {
           if (err) cb(err);
           else {
             if (!updatedData) cb(ERROR.INVALID_CODE);
@@ -232,7 +232,7 @@ const loginUser = (payloadData, callback) => {
       (cb) => {
         const criteria = { emailId: payloadData.emailId };
         const option = { lean: true };
-        Service.UserService.getUser(criteria, {}, option, (err, result) => {
+        Service.UserService.getRecord(criteria, {}, option, (err, result) => {
           if (err) cb(err);
           else {
             userFound = (result && result[0]) || null;
@@ -269,7 +269,7 @@ const loginUser = (payloadData, callback) => {
           deviceToken: payloadData.deviceToken,
           deviceType: payloadData.deviceType
         };
-        Service.UserService.updateUser(
+        Service.UserService.updateRecord(
           criteria,
           setQuery,
           { new: true },
@@ -290,7 +290,7 @@ const loginUser = (payloadData, callback) => {
           codeUpdatedAt: 0
         };
         const option = { lean: true };
-        Service.UserService.getUser(criteria, projection, option, (err, result) => {
+        Service.UserService.getRecord(criteria, projection, option, (err, result) => {
           if (err) cb(err);
           else {
             userFound = (result && result[0]) || null;
@@ -356,7 +356,7 @@ var resendOTP = function (userData, callback) {
           _id: userData._id
         };
         var options = { lean: true };
-        Service.UserService.getUser(query, {}, options, function (err, data) {
+        Service.UserService.getRecord(query, {}, options, function (err, data) {
           if (err) {
             cb(err);
           } else {
@@ -403,7 +403,7 @@ var resendOTP = function (userData, callback) {
         var options = {
           lean: true
         };
-        Service.UserService.updateUser(criteria, setQuery, options, cb);
+        Service.UserService.updateRecord(criteria, setQuery, options, cb);
       }
     ],
     function (err, result) {
@@ -421,7 +421,7 @@ var getOTP = function (payloadData, callback) {
     OTPCode: 1
   };
   var options = { lean: true };
-  Service.UserService.getUser(query, projection, options, function (err, data) {
+  Service.UserService.getRecord(query, projection, options, function (err, data) {
     if (err) {
       callback(err);
     } else {
@@ -445,7 +445,7 @@ var accessTokenLogin = function (userData, callback) {
         var criteria = {
           _id: userData._id
         };
-        Service.UserService.getUser(criteria, { password: 0 }, {}, function (
+        Service.UserService.getRecord(criteria, { password: 0 }, {}, function (
           err,
           data
         ) {
@@ -489,7 +489,7 @@ var logoutCustomer = function (userData, callbackRoute) {
         var criteria = {
           _id: userData._id
         };
-        Service.UserService.getUser(criteria, {}, {}, function (err, data) {
+        Service.UserService.getRecord(criteria, {}, {}, function (err, data) {
           if (err) cb(err);
           else {
             if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
@@ -539,7 +539,7 @@ var getProfile = function (userData, callback) {
           codeUpdatedAt: 0
         };
         var options = { lean: true };
-        Service.UserService.getUser(query, projection, options, function (
+        Service.UserService.getRecord(query, projection, options, function (
           err,
           data
         ) {
@@ -574,7 +574,7 @@ var changePassword = function (userData, payloadData, callbackRoute) {
           _id: userData._id
         };
         var options = { lean: true };
-        Service.UserService.getUser(query, {}, options, function (err, data) {
+        Service.UserService.getRecord(query, {}, options, function (err, data) {
           if (err) {
             cb(err);
           } else {
@@ -596,7 +596,7 @@ var changePassword = function (userData, payloadData, callbackRoute) {
           firstLogin: 1
         };
         var options = { lean: true };
-        Service.UserService.getUser(query, projection, options, function (
+        Service.UserService.getRecord(query, projection, options, function (
           err,
           data
         ) {
@@ -639,7 +639,7 @@ var changePassword = function (userData, payloadData, callbackRoute) {
           dataToUpdate = { $set: { password: newPassword } };
         }
         var condition = { _id: userData._id };
-        Service.UserService.updateUser(condition, dataToUpdate, {}, function (
+        Service.UserService.updateRecord(condition, dataToUpdate, {}, function (
           err,
           user
         ) {
@@ -675,7 +675,7 @@ var forgetPassword = function (payloadData, callback) {
         var query = {
           emailId: payloadData.emailId
         };
-        Service.UserService.getUser(
+        Service.UserService.getRecord(
           query,
           {
             _id: 1,
@@ -728,7 +728,7 @@ var forgetPassword = function (payloadData, callback) {
         var query = {
           _id: dataFound._id
         };
-        Service.UserService.updateUser(query, dataToUpdate, {}, function (
+        Service.UserService.updateRecord(query, dataToUpdate, {}, function (
           err,
           data
         ) {
@@ -771,7 +771,6 @@ var forgetPassword = function (payloadData, callback) {
               if (err) {
                 cb(err);
               } else {
-                appLogger.info("<<<<<<<<<<<<<< created successfully");
                 cb();
               }
             }
@@ -809,7 +808,7 @@ var resetPassword = function (payloadData, callbackRoute) {
         var query = {
           emailId: payloadData.emailId
         };
-        Service.UserService.getUser(
+        Service.UserService.getRecord(
           query,
           {
             _id: 1,
@@ -880,7 +879,7 @@ var resetPassword = function (payloadData, callbackRoute) {
           password: UniversalFunctions.CryptData(payloadData.password)
         };
         appLogger.info(dataToUpdate);
-        Service.UserService.updateUser(
+        Service.UserService.updateRecord(
           { _id: customerId },
           dataToUpdate,
           {},

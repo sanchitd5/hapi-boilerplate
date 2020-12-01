@@ -63,12 +63,13 @@ exports.generateUniqueCode = (noOfDigits, userRole, callback) => {
         (cb) => {
             //Push All generated codes in excludeAry
             if (userRole == UniversalFunctions.CONFIG.APP_CONSTANTS.DATABASE.USER_ROLES.USER) {
-                Services.UserService.getAllGeneratedCodes(function (err, dataAry) {
+                Services.UserService.getRecord({ OTPCode: { $ne: null } }, { OTPCode: 1 }, { lean: true }, (err, data) => {
                     if (err) {
                         cb(err);
                     } else {
-                        if (dataAry && dataAry.length > 0) {
-                            excludeArray = dataAry
+                        var generatedCodes = [];
+                        if (data && data.length > 0) {
+                            excludeArray = data.map(row => row.OTPCode.toString());
                         }
                         cb();
                     }

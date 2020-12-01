@@ -5,7 +5,6 @@ const getForgetPasswordRequest = function (conditions, projection, options, call
 };
 const updateForgetPasswordRequest = function (criteria, dataToSet, options, callback) {
     Models.ForgetPassword.findOneAndUpdate(criteria, dataToSet, options, callback);
-
 };
 
 const createForgetPasswordRequest = function (data, callback) {
