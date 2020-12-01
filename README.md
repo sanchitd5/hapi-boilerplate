@@ -3,6 +3,8 @@ A Node based module using Mongodb to onboard user's into a very basic applicatio
 
 The Node.js app uses [Hapi Framework](https://hapijs.com) and [Hapi Swagger](https://github.com/glennjones/hapi-swagger)
 
+PS : This is an ES6 translation of this [project](https://github.com/ChoudharyNavit22/User-Onboarding-Module)
+
 # Contents
 
 * [Manual Deployment](#manual-deployment)
