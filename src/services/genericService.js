@@ -10,7 +10,7 @@ export default class GenericService {
      * @param {String} modelName Name of the Model
      */
     constructor(modelName) {
-        if (!this.isModelValid(modelName)) {
+        if (!this.#isModelValid(modelName)) {
             appLogger.error(`Invalid model name ${modelName}`);
             throw "Invalid model name '" + modelName + "'. Terminating app..."
         }
@@ -20,11 +20,12 @@ export default class GenericService {
     }
 
     /**
+     * @private
      * @author Sanchit Dang
      * @description Validate if models exists
      * @param {String} modelName name of the model 
      */
-    isModelValid(modelName) {
+    #isModelValid(modelName) {
         return !(!modelName || 0 === modelName.length || !MODELS.hasOwnProperty(modelName));
     }
 
