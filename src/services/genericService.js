@@ -85,7 +85,7 @@ export default class GenericService {
      * @param {Function} callback 
      */
     getPopulatedRecords(criteria, projection, populate, callback) {
-        MODELS[this.name].find(criteria).select(projection).populate(populate).exec(callback)
+        MODELS[this.modelName].find(criteria).select(projection).populate(populate).exec(callback)
     }
 
     /**
@@ -95,7 +95,7 @@ export default class GenericService {
      * @param {Function} callback 
      */
     aggregate(criteria, callback) {
-        MODELS[this.name].aggregate(criteria, callback);
+        MODELS[this.modelName].aggregate(criteria, callback);
     }
 
 
@@ -109,7 +109,7 @@ export default class GenericService {
     getRecordUsingPromise(criteria, projection, options) {
         options.lean = true;
         return new Promise((resolve, reject) => {
-            MODELS[this.name].find(criteria, projection, options, function (err, data) {
+            MODELS[this.modelName].find(criteria, projection, options, function (err, data) {
                 if (err) reject(err);
                 else resolve(data);
             });

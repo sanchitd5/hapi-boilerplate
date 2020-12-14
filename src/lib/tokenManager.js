@@ -24,7 +24,7 @@ var getTokenFromDB = async function (userId, userType, token) {
   };
   switch (userType) {
     case Config.APP_CONSTANTS.DATABASE.USER_ROLES.USER:
-      result = await Services.UserService.getUserPromise(criteria, {}, {});
+      result = await Services.UserService.getRecordUsingPromise(criteria, {}, {});
       if (result && result.length > 0) {
         result[0].type = userType;
         return result[0];
@@ -32,7 +32,7 @@ var getTokenFromDB = async function (userId, userType, token) {
         return Config.APP_CONSTANTS.STATUS_MSG.ERROR.INVALID_TOKEN;
       }
     case Config.APP_CONSTANTS.DATABASE.USER_ROLES.ADMIN:
-      result = await Services.AdminService.getAdminPromise(criteria, {}, {});
+      result = await Services.AdminService.getRecordUsingPromise(criteria, {}, {});
       if (result && result.length > 0) {
         result[0].type = userType;
         return result[0];
@@ -57,7 +57,7 @@ var setTokenInDB = function (userId, userType, tokenToSave, callback) {
       function (cb) {
         switch (userType) {
           case Config.APP_CONSTANTS.DATABASE.USER_ROLES.USER:
-            Services.UserService.updateUser(
+            Services.UserService.updateRecord(
               criteria,
               setQuery,
               { new: true },
@@ -75,7 +75,7 @@ var setTokenInDB = function (userId, userType, tokenToSave, callback) {
             );
             break;
           case Config.APP_CONSTANTS.DATABASE.USER_ROLES.ADMIN:
-            Services.AdminService.updateAdmin(
+            Services.AdminService.updateRecord(
               criteria,
               setQuery,
               { new: true },
