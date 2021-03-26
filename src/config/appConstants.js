@@ -14,7 +14,8 @@ var swaggerDefaultResponseMessages = [
 const DATABASE = {
   DEVICE_TYPES: {
     ANDROID: "ANDROID",
-    IOS: "IOS"
+    IOS: "IOS",
+    WEB: "WEB"
   },
   USER_ROLES: {
     USER: "USER",

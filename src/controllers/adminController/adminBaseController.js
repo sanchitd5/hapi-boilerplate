@@ -1,17 +1,17 @@
 import Service from '../../services';
 import async from "async";
 import UniversalFunctions from "../../utils/universalFunctions";
+import TokenManager from '../../lib/tokenManager';
 
-var TokenManager = require("../../lib/tokenManager");
 const ERROR = UniversalFunctions.CONFIG.APP_CONSTANTS.STATUS_MSG.ERROR;
 const Config = UniversalFunctions.CONFIG;
 
 const adminLogin = (payload, callback) => {
   const emailId = payload.emailId;
   const password = payload.password;
-  var userFound = false;
-  var accessToken = null;
-  var successLogin = false;
+  let userFound = false;
+  let accessToken = null;
+  let successLogin = false;
   async.series(
     [
       (cb) => {
@@ -39,7 +39,6 @@ const adminLogin = (payload, callback) => {
         }
       },
       (cb) => {
-
         var criteria = {
           emailId: emailId
         };
@@ -69,7 +68,7 @@ const adminLogin = (payload, callback) => {
             type:
               UniversalFunctions.CONFIG.APP_CONSTANTS.DATABASE.USER_ROLES.ADMIN
           };
-          TokenManager.setToken(tokenData, function (err, output) {
+          TokenManager.setToken(tokenData, payload.deviceData, function (err, output) {
             if (err) {
               cb(err);
             } else {
@@ -99,15 +98,16 @@ const adminLogin = (payload, callback) => {
   );
 };
 
-const accessTokenLogin = function (userData, callback) {
+const accessTokenLogin = function (payload, callback) {
   var appVersion;
-  var userdata = {};
   var userFound = null;
+  const userData = payload;
+  console.log(userData);
   async.series(
     [
       function (cb) {
         var criteria = {
-          _id: userData._id
+          _id: userData.adminId
         };
         Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (
           err,
@@ -136,7 +136,7 @@ const accessTokenLogin = function (userData, callback) {
     function (err, user) {
       if (!err)
         return callback(null, {
-          accessToken: userdata.accessToken,
+          accessToken: userData.accessToken,
           adminDetails: UniversalFunctions.deleteUnnecessaryUserData(userFound),
           appVersion: appVersion
         });
@@ -151,8 +151,8 @@ const createAdmin = function (userData, payloadData, callback) {
   async.series(
     [
       function (cb) {
-        var criteria = {
-          _id: userData._id
+        const criteria = {
+          _id: userData.adminId
         };
         Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
           if (err) cb(err);
@@ -167,7 +167,7 @@ const createAdmin = function (userData, payloadData, callback) {
         });
       },
       function (cb) {
-        var criteria = {
+        const criteria = {
           emailId: payloadData.emailId
         }
         Service.AdminService.getRecord(criteria, {}, {}, function (err, data) {
@@ -203,8 +203,8 @@ const getAdmin = function (userData, callback) {
   let userFound = false;
   async.series([
     function (cb) {
-      var criteria = {
-        _id: userData._id
+      const criteria = {
+        _id: userData.adminId
       };
       Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
@@ -235,11 +235,11 @@ const getAdmin = function (userData, callback) {
   })
 }
 
-var blockUnblockAdmin = function (userData, payloadData, callback) {
+const blockUnblockAdmin = function (userData, payloadData, callback) {
   async.series([
     function (cb) {
-      var criteria = {
-        _id: userData._id
+      const criteria = {
+        _id: userData.adminId
       };
       Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
@@ -263,10 +263,10 @@ var blockUnblockAdmin = function (userData, payloadData, callback) {
       })
     },
     function (cb) {
-      var criteria = {
+      const criteria = {
         _id: payloadData.adminId
       }
-      var dataToUpdate = {
+      const dataToUpdate = {
         $set: {
           isBlocked: payloadData.block
         }
@@ -287,8 +287,8 @@ const createUser = function (userData, payloadData, callback) {
   let userFound = false;
   async.series([
     function (cb) {
-      var criteria = {
-        _id: userData._id
+      const criteria = {
+        _id: userData.adminId
       };
       Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
@@ -333,8 +333,8 @@ const getUser = (userData, callback) => {
   let userFound = false;
   async.series([
     function (cb) {
-      var criteria = {
-        _id: userData._id
+      const criteria = {
+        _id: userData.adminId
       };
       Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
@@ -349,7 +349,7 @@ const getUser = (userData, callback) => {
       });
     },
     function (cb) {
-      var projection = {
+      const projection = {
         password: 0,
         accessToken: 0,
         OTPCode: 0,
@@ -372,11 +372,11 @@ const getUser = (userData, callback) => {
   })
 }
 
-var blockUnblockUser = function (userData, payloadData, callback) {
+const blockUnblockUser = function (userData, payloadData, callback) {
   async.series([
     function (cb) {
-      var criteria = {
-        _id: userData._id
+      const criteria = {
+        _id: userData.adminId
       };
       Service.AdminService.getRecord(criteria, { password: 0 }, {}, function (err, data) {
         if (err) cb(err);
@@ -400,10 +400,10 @@ var blockUnblockUser = function (userData, payloadData, callback) {
       })
     },
     function (cb) {
-      var criteria = {
+      const criteria = {
         _id: payloadData.userId
       }
-      var dataToUpdate = {
+      const dataToUpdate = {
         $set: {
           isBlocked: payloadData.block
         }
@@ -419,17 +419,17 @@ var blockUnblockUser = function (userData, payloadData, callback) {
   })
 }
 
-var changePassword = function (userData, payloadData, callbackRoute) {
-  var oldPassword = UniversalFunctions.CryptData(payloadData.oldPassword);
-  var newPassword = UniversalFunctions.CryptData(payloadData.newPassword);
-  var customerData;
+const changePassword = function (userData, payloadData, callbackRoute) {
+  const oldPassword = UniversalFunctions.CryptData(payloadData.oldPassword);
+  const newPassword = UniversalFunctions.CryptData(payloadData.newPassword);
+  let customerData;
   async.series(
     [
       function (cb) {
-        var query = {
-          _id: userData._id
+        const query = {
+          _id: userData.adminId
         };
-        var options = { lean: true };
+        const options = { lean: true };
         Service.AdminService.getRecord(query, {}, options, function (err, data) {
           if (err) {
             cb(err);
@@ -445,7 +445,7 @@ var changePassword = function (userData, payloadData, callbackRoute) {
       },
       function (callback) {
         var query = {
-          _id: userData._id
+          _id: userData.adminId
         };
         var projection = {
           password: 1,
@@ -494,7 +494,7 @@ var changePassword = function (userData, payloadData, callbackRoute) {
         else {
           dataToUpdate = { $set: { password: newPassword } };
         }
-        var condition = { _id: userData._id };
+        var condition = { _id: userData.adminId };
         Service.AdminService.updateRecord(condition, dataToUpdate, {}, function (
           err,
           user
@@ -521,47 +521,13 @@ var changePassword = function (userData, payloadData, callbackRoute) {
   );
 }
 
-var logoutAdmin = function (userData, callbackRoute) {
-  async.series(
-    [
-      function (cb) {
-        var criteria = {
-          _id: userData._id
-        };
-        Service.AdminService.getRecord(criteria, {}, {}, function (err, data) {
-          if (err) cb(err);
-          else {
-            if (data.length == 0) cb(ERROR.INCORRECT_ACCESSTOKEN);
-            else {
-              cb();
-            }
-          }
-        });
-      },
-      function (callback) {
-        var condition = { _id: userData._id };
-        var dataToUpdate = { $unset: { accessToken: 1 } };
-        Service.AdminService.updateRecord(condition, dataToUpdate, {}, function (
-          err,
-          result
-        ) {
-          if (err) {
-            callback(err);
-          } else {
-            callback();
-          }
-        });
-      }
-    ],
-    function (error, result) {
-      if (error) {
-        return callbackRoute(error);
-      } else {
-        return callbackRoute(null);
-      }
-    }
-  );
+var logoutAdmin = function (tokenData, callback) {
+  Service.TokenService.deleteRecord({ _id: tokenData._id }, (err) => {
+    if (err) callback(err);
+    else callback();
+  });
 }
+
 
 export default {
   adminLogin,

@@ -14,109 +14,99 @@
 import Services from "../services";
 import Config from "../config";
 var Jwt = require("jsonwebtoken");
-var async = require("async");
 
+/**
+ * 
+ * @param {String} userId 
+ * @param {String} userType 
+ * @param {String} deviceUUID 
+ * @param {String} token 
+ * @returns 
+ */
 var getTokenFromDB = async function (userId, userType, token) {
-  var result;
-  var criteria = {
-    _id: userId,
-    accessToken: token
-  };
-  switch (userType) {
-    case Config.APP_CONSTANTS.DATABASE.USER_ROLES.USER:
-      result = await Services.UserService.getRecordUsingPromise(criteria, {}, {});
-      if (result && result.length > 0) {
-        result[0].type = userType;
-        return result[0];
-      } else {
-        return Config.APP_CONSTANTS.STATUS_MSG.ERROR.INVALID_TOKEN;
-      }
-    case Config.APP_CONSTANTS.DATABASE.USER_ROLES.ADMIN:
-      result = await Services.AdminService.getRecordUsingPromise(criteria, {}, {});
-      if (result && result.length > 0) {
-        result[0].type = userType;
-        return result[0];
-      } else {
-        return Config.APP_CONSTANTS.STATUS_MSG.ERROR.INVALID_TOKEN;
-      }
-    default:
-      return Config.APP_CONSTANTS.STATUS_MSG.ERROR.IMP_ERROR;
+  var criteria = (() => {
+    switch (userType) {
+      case Config.APP_CONSTANTS.DATABASE.USER_ROLES.ADMIN:
+      case Config.APP_CONSTANTS.DATABASE.USER_ROLES.SUPERADMIN:
+        return { adminId: userId, accessToken: token };
+      default: return { userId, accessToken: token }
+    }
+  })();
+  let result = await Services.TokenService.getRecordUsingPromise(criteria, {}, {});
+  if (result && result.length > 0) {
+    result[0].type = userType;
+    return result[0];
+  } else {
+    return Config.APP_CONSTANTS.STATUS_MSG.ERROR.INVALID_TOKEN;
   }
 };
 
-var setTokenInDB = function (userId, userType, tokenToSave, callback) {
+/**
+ * 
+ * @param {String} userId 
+ * @param {String} userType 
+ * @param {Object} tokenData 
+ * @param {String} tokenData.accessToken
+ * @param {String} tokenData.deviceType
+ * @param {String} tokenData.deviceName
+ * @param {String} tokenData.deviceUUID
+ * @param {Function} callback 
+ */
+const setTokenInDB = function (userId, userType, tokenData, callback) {
   tokenLogger.info("login_type::::::::", userType);
-  var criteria = {
-    _id: userId
-  };
-  var setQuery = {
-    accessToken: tokenToSave
-  };
-  async.series(
-    [
-      function (cb) {
-        switch (userType) {
-          case Config.APP_CONSTANTS.DATABASE.USER_ROLES.USER:
-            Services.UserService.updateRecord(
-              criteria,
-              setQuery,
-              { new: true },
-              function (err, dataAry) {
-                if (err) {
-                  cb(err);
-                } else {
-                  if (dataAry && dataAry._id) {
-                    cb();
-                  } else {
-                    cb(Config.APP_CONSTANTS.STATUS_MSG.ERROR.IMP_ERROR);
-                  }
-                }
-              }
-            );
-            break;
-          case Config.APP_CONSTANTS.DATABASE.USER_ROLES.ADMIN:
-            Services.AdminService.updateRecord(
-              criteria,
-              setQuery,
-              { new: true },
-              function (err, dataAry) {
-                if (err) {
-                  cb(err);
-                } else {
-                  if (dataAry && dataAry._id) {
-                    cb();
-                  } else {
-                    cb(Config.APP_CONSTANTS.STATUS_MSG.ERROR.IMP_ERROR);
-                  }
-                }
-              }
-            );
-            break;
-          default:
-            cb(Config.APP_CONSTANTS.STATUS_MSG.ERROR.IMP_ERROR);
-        }
-      }
-    ],
-    function (err, result) {
-      if (err) {
-        callback(err);
-      } else {
-        callback();
-      }
+  let objectToCreate, criteria;
+  switch (userType) {
+    case Config.APP_CONSTANTS.DATABASE.USER_ROLES.SUPERADMIN:
+    case Config.APP_CONSTANTS.DATABASE.USER_ROLES.ADMIN: {
+      objectToCreate = { adminId: userId, ...tokenData };
+      criteria = { adminId: userId, deviceUUID: tokenData.deviceUUID };
+      break;
     }
-  );
+    default: {
+      objectToCreate = { userId: userId, ...tokenData };
+      criteria = { userId, deviceUUID: tokenData.deviceUUID };
+    }
+  }
+  Services.TokenService.getRecord(criteria, {}, {}, (err, data) => {
+    if (data.length === 0) {
+      Services.TokenService.createRecord(objectToCreate, (err) => {
+        if (err) callback(err);
+        else {
+          callback();
+        }
+      });
+    } else {
+      Services.TokenService.updateRecord(criteria, tokenData, (err) => {
+        if (err) callback(err);
+        else {
+          callback();
+        }
+      });
+    }
+  });
+
 };
 
-var setToken = function (tokenData, callback) {
+/**
+ * 
+ * @param {Object} tokenData 
+ * @param {String} tokenData.id User ID
+ * @param {String} tokenData.type User Type 
+ * @param {Object} deviceData 
+ * @param {String} deviceData.deviceUUID 
+ * @param {String} deviceData.deviceType
+ * @param {String} deviceData.deviceName
+ * @param {Function} callback 
+ */
+const setToken = function (tokenData, deviceData, callback) {
   if (!tokenData.id || !tokenData.type) {
     callback(Config.APP_CONSTANTS.STATUS_MSG.ERROR.IMP_ERROR);
   } else {
-    var tokenToSend = Jwt.sign(tokenData, process.env.JWT_SECRET_KEY);
-    setTokenInDB(tokenData.id, tokenData.type, tokenToSend, function (
+    const tokenToSend = Jwt.sign(tokenData, process.env.JWT_SECRET_KEY);
+    setTokenInDB(tokenData.id, tokenData.type, { accessToken: tokenToSend, ...deviceData }, (
       err,
       data
-    ) {
-      tokenLogger.info("token>>>>", err, data);
+    ) => {
       callback(err, { accessToken: tokenToSend });
     });
   }
@@ -133,6 +123,7 @@ var verifyToken = async function (token) {
     if (result && result._id) return { userData: result };
     else throw result;
   } catch (err) {
+    console.error(err);
     return err;
   }
 };
@@ -146,7 +137,7 @@ var decodeToken = async function (token) {
   }
 };
 
-module.exports = {
+export default {
   decodeToken: decodeToken,
   verifyToken: verifyToken,
   setToken: setToken

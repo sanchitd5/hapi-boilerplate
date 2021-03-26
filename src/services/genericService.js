@@ -11,7 +11,7 @@ export default class GenericService {
      */
     constructor(modelName) {
         if (!this.#isModelValid(modelName)) {
-            appLogger.error(`Invalid model name ${modelName}`);
+            console.error(`Invalid model name ${modelName}`);
             throw "Invalid model name '" + modelName + "'. Terminating app..."
         }
 

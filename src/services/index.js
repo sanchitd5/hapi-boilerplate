@@ -5,5 +5,6 @@ import ForgetPasswordService from './forgetPasswordService';
 export default {
   UserService: new GenericService('User'),
   ForgetPasswordService,
-  AdminService: new GenericService('Admin')
+  AdminService: new GenericService('Admin'),
+  TokenService: new GenericService('Token')
 };

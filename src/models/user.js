@@ -4,13 +4,6 @@ const user = new Schema({
   firstName: { type: String, trim: true, required: true },
   lastName: { type: String, trim: true, required: true },
   emailId: { type: String, trim: true, required: true, unique: true },
-  accessToken: {
-    type: String,
-    trim: true,
-    index: true,
-    unique: true,
-    sparse: true
-  },
   phoneNumber: {
     type: String,
     required: true,

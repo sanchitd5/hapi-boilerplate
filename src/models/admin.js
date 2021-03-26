@@ -5,7 +5,6 @@ const admin = new Schema({
     emailId: { type: String, unique: true, sparse: true },
     fullName: { type: String },
     password: { type: String, required: true },
-    accessToken: { type: String, select: false },
     userType: {
         type: String, enum: [
             Config.APP_CONSTANTS.DATABASE.USER_ROLES.SUPERADMIN,

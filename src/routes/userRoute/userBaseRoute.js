@@ -1,6 +1,7 @@
 import UniversalFunctions from "../../utils/universalFunctions";
 import Joi from "joi";
 import Controller from "../../controllers";
+import Config from '../../config';
 
 const userRegister = {
   method: "POST",
@@ -117,7 +118,12 @@ const login = {
     validate: {
       payload: Joi.object({
         emailId: Joi.string().required(),
-        password: Joi.string().required().min(5).trim()
+        password: Joi.string().required().min(5).trim(),
+        deviceData: Joi.object({
+          deviceType: Joi.string().valid(...Object.values(Config.APP_CONSTANTS.DATABASE.DEVICE_TYPES)).required(),
+          deviceName: Joi.string().required(),
+          deviceUUID: Joi.string().required(),
+        }).label('deviceData')
       }).label("User: Login"),
       failAction: UniversalFunctions.failActionFunction
     },
