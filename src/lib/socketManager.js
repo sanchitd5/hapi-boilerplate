@@ -18,7 +18,7 @@ class SocketManager {
      * @param {Hapi.Server} server HAPI Server
      */
     connectSocket = (server) => {
-        const io = SocketIO.listen(server.listener);
+        const io = SocketIO().listen(server.listener);
         socketLogger.info("socket server started");
         io.on('connection', function (socket) {
             socketLogger.info("connection established: ", socket.id);
