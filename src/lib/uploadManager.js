@@ -12,8 +12,7 @@ import CONFIG from '../config';
 import UniversalFunctions from '../utils/universalFunctions';
 import async from 'async';
 import Path from 'path';
-import fs from 'fs';
-import fsExtra from 'fs-extra';
+import fs from 'fs-extra'; 
 import AWS from 'aws-sdk';
 import ffmpeg from 'fluent-ffmpeg';
 
@@ -430,7 +429,7 @@ function uploadVideoWithThumbnail(videoFile, folder, filename, callbackParent) {
 }
 
 function saveCSVFile(fileData, path, callback) {
-    fsExtra.copy(fileData, path, callback);
+    fs.copy(fileData, path, callback);
 }
 
 module.exports = {
