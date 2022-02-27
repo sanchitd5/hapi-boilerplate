@@ -59,18 +59,19 @@ $ npm -v
 
 * Step1: Git clone the application
 
-* Step2: Install node modules
+* Step2a: Install node modules
 
 ```
-$ npm i
+$ npm i -g pnpm
 
-or 
-
-$ npm install
 ```
 
 ```
 $ npm i -g @babel/core @babel/node @babel/cli
+```
+
+```
+$ pnpm i
 ```
 
 * Step3: Copy .env.example to .env

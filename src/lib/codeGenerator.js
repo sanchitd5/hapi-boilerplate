@@ -15,7 +15,7 @@ import UniversalFunctions from '../utils/universalFunctions';
 import Services from '../services';
 import async from 'async';
 
-const _ = require('underscore');
+const _ = require('lodash');
 
 
 const generateRandomNumbers = (numberLength, excludeList) => {

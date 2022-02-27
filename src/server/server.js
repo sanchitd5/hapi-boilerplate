@@ -6,6 +6,9 @@ import SocketManager from "../lib/socketManager";
  * @description Initilize HAPI Server
  */
 const initServer = async () => {
+
+  await ServerHelper.ensureEnvironmentFileExists();
+
   //Create Server
   const server = ServerHelper.createServer();
 
@@ -36,11 +39,11 @@ const initServer = async () => {
  * @author Sanchit Dang
  * @description Start HAPI Server
  */
-export const startMyServer = () => {
+export const startMyServer = async () => {
 
   ServerHelper.configureLog4js();
 
-  ServerHelper.connectMongoDB();
+  await ServerHelper.connectMongoDB();
 
   // Global variable to get app root folder path
   ServerHelper.setGlobalAppRoot();

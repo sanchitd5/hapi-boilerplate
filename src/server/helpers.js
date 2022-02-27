@@ -8,6 +8,7 @@ import CONFIG from "../config/index";
 import Path from "path";
 import BootStrap from "../utils/bootStrap";
 import Routes from "../routes";
+import fs from 'fs-extra';
 
 /**
  * @description Helper file for the server
@@ -144,18 +145,22 @@ class ServerHelper {
     }
   }
 
-  connectMongoDB() {
-    const mongooseOptions = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    };
-    mongoose.set('useCreateIndex', true);
-    mongoose.set('useFindAndModify', false);
-    mongoose.connect(CONFIG.DB_CONFIG.mongo.URI, mongooseOptions, (err) => {
-      if (err) {
-        mongoLogger.debug("DB Error: ", err);
-        process.exit(1);
-      } else mongoLogger.info('MongoDB Connected');
+  async connectMongoDB() {
+    try {
+      mongoLogger.debug('Trying to make connection to DB');
+      await mongoose.connect(CONFIG.DB_CONFIG.mongo.URI);
+      mongoLogger.info('MongoDB Connected');
+    } catch (e) {
+      mongoLogger.error("DB Error: ", e);
+      process.exit(1);
+    }
+  }
+
+  async ensureEnvironmentFileExists() {
+    await fs.copy('.env.example', '.env', {
+      filter: (src, dest) => {
+        return !!dest;
+      }
     });
   }
 }

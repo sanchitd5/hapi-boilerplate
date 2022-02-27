@@ -8,16 +8,15 @@
 * - ERROR - ‘red’
 * - FATAL - ‘magenta’
 */
+import CONFIG from '../config';
+import UniversalFunctions from '../utils/universalFunctions';
+import async from 'async';
+import Path from 'path';
+import fs from 'fs';
+import fsExtra from 'fs-extra';
+import AWS from 'aws-sdk';
+import ffmpeg from 'fluent-ffmpeg';
 
-var CONFIG = require('../config');
-var UniversalFunctions = require('../utils/universalFunctions');
-var async = require('async');
-var Path = require('path');
-var knox = require('knox');
-var fsExtra = require('fs-extra');
-var fs = require('fs');
-var AWS = require('ibm-cos-sdk');
-var ffmpeg = require("fluent-ffmpeg");
 ///*
 // 1) Save Local Files
 // 2) Create Thumbnails

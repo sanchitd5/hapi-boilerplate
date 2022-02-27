@@ -16,7 +16,7 @@ import Boom from "@hapi/boom";
 import CONFIG from "../config";
 import randomstring from "randomstring";
 import validator from "validator";
-import moment from "moment";
+import { DateTime } from "luxon";
 
 
 const sendError = (data) => {
@@ -189,22 +189,14 @@ var createArray = function (List, keyName) {
   return IdArray;
 
 };
-function getRange(startDate, endDate, diffIn) {
 
-  var dr = moment.range(startDate, endDate);
+const getRange = (startDate, endDate, diffIn = CONFIG.APP_CONSTANTS.TIME_UNITS.HOURS) =>
+  DateTime.fromJSDate(startDate).diff(DateTime.fromJSDate(endDate)).as(diffIn ?? 'millis');
 
-  if (!diffIn)
-    diffIn = CONFIG.APP_CONSTANTS.TIME_UNITS.HOURS;
-  if (diffIn == "milli")
-    return dr.diff();
 
-  return dr.diff(diffIn);
+const checkFileExtension = (fileName) =>
+  fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length) || fileName;
 
-}
-
-var checkFileExtension = function (fileName) {
-  return fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length) || fileName;
-}
 
 /**
  * @author Sanchit Dang

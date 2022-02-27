@@ -16,7 +16,7 @@ import UniversalFunctions from "../../utils/universalFunctions";
 import TokenManager from '../../lib/tokenManager';
 const CodeGenerator = require("../../lib/codeGenerator");
 const ERROR = UniversalFunctions.CONFIG.APP_CONSTANTS.STATUS_MSG.ERROR;
-const _ = require("underscore");
+const _ = require("lodash");
 
 const createUser = (payloadData, callback) => {
   let accessToken = null;
