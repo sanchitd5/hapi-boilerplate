@@ -12,13 +12,11 @@
  */
 
 import UniversalFunctions from "../../utils/universalFunctions";
+import async from 'async';
+import CONFIG from '../../config';
+import UploadManager from '../../lib/uploadManager';
 
-var UploadManager = require("../../lib/uploadManager");
-var CONFIG = require("../../config");
-var async = require("async");
-var ERROR = UniversalFunctions.CONFIG.APP_CONSTANTS.STATUS_MSG.ERROR;
-
-var uploadImage = function (payloadData, callback) {
+const uploadImage = (payloadData, callback) => {
   var imageFileURL;
   var imageFile = payloadData.imageFile
   if (payloadData.imageFile && payloadData.imageFile.filename) {
@@ -53,7 +51,7 @@ var uploadImage = function (payloadData, callback) {
   })
 }
 
-var uploadVideo = function (payloadData, callback) {
+const uploadVideo = function (payloadData, callback) {
   var videoFileURL;
   var videoFile = payloadData.videoFile
   if (payloadData.videoFile && payloadData.videoFile.filename) {
@@ -89,7 +87,7 @@ var uploadVideo = function (payloadData, callback) {
   })
 }
 
-var uploadDocument = function (payloadData, callback) {
+const uploadDocument = function (payloadData, callback) {
   var documentFileUrl;
   var documentFile = payloadData.documentFile
   if (payloadData.documentFile && payloadData.documentFile.filename) {
@@ -121,7 +119,7 @@ var uploadDocument = function (payloadData, callback) {
   })
 }
 
-module.exports = {
+export default {
   uploadImage: uploadImage,
   uploadDocument: uploadDocument,
   uploadVideo: uploadVideo
