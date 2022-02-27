@@ -40,7 +40,7 @@
     "path": "0.12.7",
     "randomstring": "1.2.2",
     "socket.io": "^4.4.1",
-    "validator": "13.5.2"
+    "validator": "13.7.0"
   },
   "author": "Sanchit Dang",
   "license": "Apache-2.0",
