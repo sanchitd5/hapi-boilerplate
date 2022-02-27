@@ -39,16 +39,16 @@
     "path": "0.12.7",
     "randomstring": "1.2.2",
     "socket.io": "^4.4.1",
-    "validator": "13.7.0"
+    "validator": "^13.7.0"
   },
   "author": "Sanchit Dang",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@babel/cli": "^7.13.10",
-    "@babel/core": "^7.13.10",
-    "@babel/node": "^7.13.12",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-proposal-private-methods": "^7.13.0",
-    "@babel/preset-env": "^7.13.12"
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.5",
+    "@babel/node": "^7.16.8",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-private-methods": "^7.16.11",
+    "@babel/preset-env": "^7.16.11"
   }
 }
